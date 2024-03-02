@@ -9,7 +9,7 @@ const Message = () => {
     console.log(message);
 
     if (message) {
-      fetch("http://localhost:8080/sendMessage", {
+      fetch("http://localhost:8080/api/v1/msg/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
