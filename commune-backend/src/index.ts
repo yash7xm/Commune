@@ -1,17 +1,15 @@
-import express from "express";
-import cors from "cors";
-
+import http from "http";
+import { app } from "./api-server";
+import { socketServer } from "./edge-server";
 import { ServerConfig } from "./config";
-import apiRoutes from "./routes";
 
-const app = express();
+// Create HTTP server
+const server = http.createServer(app);
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.use("/api", apiRoutes);
-
-app.listen(ServerConfig.PORT, () => {
-  console.log(`Server started on ${ServerConfig.PORT}`);
+// Start server
+server.listen(ServerConfig.PORT, () => {
+  console.log(`Server listening on port ${ServerConfig.PORT}`);
 });
+
+// Initialize Socket.IO server
+socketServer(server);

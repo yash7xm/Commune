@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
+import { sendMessageToSocket } from "../edge-server";
+
 
 export function messageController(req: Request, res: Response) {
-  console.log(req.body.message);
+  sendMessageToSocket("yash", req.body.message);
+
   res.sendStatus(200);
 }
