@@ -1,10 +1,8 @@
 import express from "express";
+import { MessageController } from "../../controllers";
 
 const router = express.Router();
 
-router.post("/send", (req, res) => {
-  console.log(req.body.message);
-  res.sendStatus(200);
-});
+router.post("/send", MessageController);
 
 export default router;
