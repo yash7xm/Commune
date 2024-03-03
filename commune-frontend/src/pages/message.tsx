@@ -1,14 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import socket from "../config/socket-config";
 
-const Message = () => {
+const Message: React.FC = () => {
+  const [messages, setMessages] = useState<any[]>([]);
+
   useEffect(() => {
-    socket.on("message", (msg) => {
-      console.log(`message recieved ${msg}`);
-    });
+    const messageListener = (msg: any) => {
+      console.log(`message received: ${msg}`);
+      setMessages(prevMessages => [...prevMessages, msg]);
+    };
+
+    socket.on("message", messageListener);
+
+    // Clean up socket listener on component unmount
+    return () => {
+      socket.off("message", messageListener);
+    };
   }, []);
 
-  function handleMessageSent(e: React.FormEvent<HTMLFormElement>) {
+  const handleMessageSent = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
@@ -22,14 +32,18 @@ const Message = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ message: message }),
-      }).then((response) => {
+      })
+      .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         console.log("Message sent successfully");
+      })
+      .catch((error) => {
+        console.error("Error sending message:", error);
       });
     }
-  }
+  };
 
   return (
     <div>
@@ -41,6 +55,11 @@ const Message = () => {
         />
         <button type="submit">Send</button>
       </form>
+      <div className="flex flex-col">
+        {messages.map((msg: any, index: number) => (
+          <div key={index}>{msg}</div>
+        ))}
+      </div>
     </div>
   );
 };
