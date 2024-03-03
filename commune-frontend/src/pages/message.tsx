@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
+import socket from "../config/socket-config";
 
 const Message = () => {
+  useEffect(() => {
+    socket.on("message", (msg) => {
+      console.log(`message recieved ${msg}`);
+    });
+  }, []);
+
   function handleMessageSent(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;

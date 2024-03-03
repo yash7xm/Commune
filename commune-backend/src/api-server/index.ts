@@ -1,4 +1,4 @@
-import express, { urlencoded } from "express";
+import express from "express";
 import cors from "cors";
 import apiRoutes from "../routes";
 
@@ -9,7 +9,3 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", apiRoutes);
-
-app.get('/dog', (req, res) => {
-    res.send('wuf wuf !!')
-})
