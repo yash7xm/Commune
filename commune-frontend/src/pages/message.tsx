@@ -1,16 +1,47 @@
 import React, { useEffect, useState } from "react";
 import socket from "../config/socket-config";
+import UsernameSelect from "../components/username";
 
 const Message: React.FC = () => {
   const [messages, setMessages] = useState<any[]>([]);
+  let user: any;
 
   useEffect(() => {
     const messageListener = (msg: any) => {
       console.log(`message received: ${msg}`);
-      setMessages(prevMessages => [...prevMessages, msg]);
+      setMessages((prevMessages) => [...prevMessages, msg]);
     };
 
     socket.on("message", messageListener);
+
+    socket.on("users", (users) => {
+      users.forEach((user: any) => {
+        user.self = user.userID === socket.id;
+        // initReactiveProperties(user);
+      });
+      // put the current user first, and then sort by username
+      users = users.sort((a: any, b: any) => {
+        if (a.self) return -1;
+        if (b.self) return 1;
+        if (a.username < b.username) return -1;
+        return a.username > b.username ? 1 : 0;
+      });
+    });
+
+    console.log(user);
+
+    // socket.emit("private message", {
+    //   messages,
+    //   to: user[0].userId,
+    // });
+    // this.selectedUser.messages.push({
+    //   content,
+    //   fromSelf: true,
+    // });
+
+    socket.on("private message", (args) => {
+      console.log(args);
+    });
 
     // Clean up socket listener on component unmount
     return () => {
@@ -23,7 +54,6 @@ const Message: React.FC = () => {
     const form = e.currentTarget;
     const formData = new FormData(form);
     const message = formData.get("message");
-    console.log(message);
 
     if (message) {
       fetch("http://localhost:8080/api/v1/msg/send", {
@@ -33,20 +63,21 @@ const Message: React.FC = () => {
         },
         body: JSON.stringify({ message: message }),
       })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        console.log("Message sent successfully");
-      })
-      .catch((error) => {
-        console.error("Error sending message:", error);
-      });
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          console.log("Message sent successfully");
+        })
+        .catch((error) => {
+          console.error("Error sending message:", error);
+        });
     }
   };
 
   return (
     <div>
+      <UsernameSelect />
       <form onSubmit={handleMessageSent}>
         <input
           className="border text-lg p-3 rounded-md"

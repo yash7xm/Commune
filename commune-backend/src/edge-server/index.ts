@@ -2,22 +2,58 @@ import { Server, Socket } from "socket.io";
 import { Server as HttpServer } from "http";
 
 let io: Server;
+let username: any;
 
 export function socketServer(server: HttpServer) {
   io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000",
-        methods: ["GET", "POST"],
-        allowedHeaders: ["my-custom-header"],
-        credentials: true
-      }
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST"],
+      allowedHeaders: ["my-custom-header"],
+      credentials: true,
+    },
   });
 
-  io.on("connection", (socket: Socket) => {
-    console.log("User connected:", socket.id);
+  io.use((socket: any, next) => {
+    username = socket.handshake.auth.username;
+    if (!username) {
+      return next(new Error("Invalid Username"));
+    }
+    socket.username = username;
+    next();
+  });
 
+  io.on("connection", (socket: any) => {
+    console.log("User connected:", socket.id);
+    console.log("Username", socket.handshake.auth.username);
+
+    // fetch existing users
+    const users = [];
+    for (let [id, socket] of io.of("/").sockets) {
+      users.push({
+        userID: id,
+        username: socket.handshake.auth.username,
+      });
+    }
+    socket.emit("users", users);
+
+    // notify existing users
+    socket.broadcast.emit("user connected", {
+      userID: socket.id,
+      username: socket.username,
+    });
+
+    // handle private messages
+    socket.on("private message", ({ content, to }: any) => {
+      socket.to(to).emit("private message", {
+        content,
+        from: socket.id,
+      });
+    });
+
+    // notify users upon disconnection
     socket.on("disconnect", () => {
-      console.log("User disconnected:", socket.id);
+      socket.broadcast.emit("user disconnected", socket.id);
     });
   });
 }

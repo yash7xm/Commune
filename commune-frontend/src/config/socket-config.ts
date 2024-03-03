@@ -5,6 +5,7 @@ const socket = io("http://localhost:8080", {
   extraHeaders: {
     "my-custom-header": "abcd",
   },
+  autoConnect: false,
 });
 
 export default socket;
