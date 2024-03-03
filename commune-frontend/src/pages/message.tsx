@@ -4,11 +4,15 @@ import UsernameSelect from "../components/username";
 
 const Message: React.FC = () => {
   const [messages, setMessages] = useState<any[]>([]);
-  let user: any;
+  const [user, setUser] = useState<any>("");
 
   useEffect(() => {
     const messageListener = (msg: any) => {
       console.log(`message received: ${msg}`);
+      socket.emit("private message", {
+        content: msg,
+        to: user.userId,
+      });
       setMessages((prevMessages) => [...prevMessages, msg]);
     };
 
@@ -26,14 +30,12 @@ const Message: React.FC = () => {
         if (a.username < b.username) return -1;
         return a.username > b.username ? 1 : 0;
       });
+
+      setUser(users[0]);
     });
 
     console.log(user);
 
-    // socket.emit("private message", {
-    //   messages,
-    //   to: user[0].userId,
-    // });
     // this.selectedUser.messages.push({
     //   content,
     //   fromSelf: true,

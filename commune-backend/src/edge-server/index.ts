@@ -45,6 +45,7 @@ export function socketServer(server: HttpServer) {
 
     // handle private messages
     socket.on("private message", ({ content, to }: any) => {
+      console.log(content);
       socket.to(to).emit("private message", {
         content,
         from: socket.id,
