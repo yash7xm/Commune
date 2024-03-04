@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
 import { sendMessageToSocket } from "../edge-server";
-import { HandleIncomingMessage } from "../services";
+const { HandleIncomingMessage } = require("../services");
 
 export async function messageController(req: Request, res: Response) {
   const msg = req.body.msg;
 
   const response = await HandleIncomingMessage(msg);
 
-  if(response) {
+  if (response) {
     sendMessageToSocket("yash", msg);
-  } 
+  }
 
   res.sendStatus(200);
 }
