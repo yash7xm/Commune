@@ -14,6 +14,7 @@ import {
 
 import useSignup from "../hooks/signup";
 import { useState } from "react";
+import { Toaster, toast } from "sonner";
 
 interface UserData {
   name: string;
@@ -38,136 +39,146 @@ const Auth = () => {
   const handleSignupForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const res = await useSignup(formData);
-    console.log(res);
+    if (res.success) {
+      toast(res.message);
+    } else {
+      toast(res.message, {
+        description: res.error.explanation[0],
+      });
+    }
+    console.log(res.message);
   };
 
   return (
-    <Tabs defaultValue="signup" className="w-[350px]">
-      <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="signup">SignUp</TabsTrigger>
-        <TabsTrigger value="signin">SignIn</TabsTrigger>
-      </TabsList>
-      <TabsContent value="signup">
-        <Card className="w-[350px]">
-          <CardHeader>
-            <CardTitle>SignUp</CardTitle>
-            <CardDescription>Create Account</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSignupForm} className="flex flex-col gap-4">
-              <div>
-                <label htmlFor="name" className="text-sm">
-                  Enter name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  placeholder="Name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="p-1"
-                  name="name"
-                />
-              </div>
-              <div>
-                <label htmlFor="username" className="text-sm">
-                  Enter username
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  placeholder="Username"
-                  value={formData.username}
-                  onChange={handleInputChange}
-                  className="p-1"
-                  name="username"
-                />
-              </div>
-              <div>
-                <label htmlFor="password" className="text-sm">
-                  Enter Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className="p-1"
-                  name="password"
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-[#7A3274] text-white p-2 text-sm rounded-sm w-[25%]"
-              >
-                Register
-              </button>
-            </form>
-          </CardContent>
-        </Card>
-      </TabsContent>
-      <TabsContent value="signin">
-        <Card className="w-[350px]">
-          <CardHeader>
-            <CardTitle>SignIn</CardTitle>
-            <CardDescription>Welcome Back</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSignupForm} className="flex flex-col gap-4">
-              <div>
-                <label htmlFor="name" className="text-sm">
-                  Enter name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  placeholder="Name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="p-1"
-                  name="name"
-                />
-              </div>
-              <div>
-                <label htmlFor="username" className="text-sm">
-                  Enter username
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  placeholder="Username"
-                  value={formData.username}
-                  onChange={handleInputChange}
-                  className="p-1"
-                  name="username"
-                />
-              </div>
-              <div>
-                <label htmlFor="password" className="text-sm">
-                  Enter Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className="p-1"
-                  name="password"
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-[#7A3274] text-white p-2 text-sm rounded-sm w-[25%]"
-              >
-                SignIn
-              </button>
-            </form>
-          </CardContent>
-        </Card>
-      </TabsContent>
-    </Tabs>
+    <>
+      <Tabs defaultValue="signup" className="w-[350px]">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="signup">SignUp</TabsTrigger>
+          <TabsTrigger value="signin">SignIn</TabsTrigger>
+        </TabsList>
+        <TabsContent value="signup">
+          <Card className="w-[350px]">
+            <CardHeader>
+              <CardTitle>SignUp</CardTitle>
+              <CardDescription>Create Account</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSignupForm} className="flex flex-col gap-4">
+                <div>
+                  <label htmlFor="name" className="text-sm">
+                    Enter name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    placeholder="Name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="p-1"
+                    name="name"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="username" className="text-sm">
+                    Enter username
+                  </label>
+                  <input
+                    type="text"
+                    id="username"
+                    placeholder="Username"
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    className="p-1"
+                    name="username"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="password" className="text-sm">
+                    Enter Password
+                  </label>
+                  <input
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className="p-1"
+                    name="password"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="bg-[#7A3274] text-white p-2 text-sm rounded-sm w-[25%]"
+                >
+                  Register
+                </button>
+              </form>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="signin">
+          <Card className="w-[350px]">
+            <CardHeader>
+              <CardTitle>SignIn</CardTitle>
+              <CardDescription>Welcome Back</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSignupForm} className="flex flex-col gap-4">
+                <div>
+                  <label htmlFor="name" className="text-sm">
+                    Enter name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    placeholder="Name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="p-1"
+                    name="name"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="username" className="text-sm">
+                    Enter username
+                  </label>
+                  <input
+                    type="text"
+                    id="username"
+                    placeholder="Username"
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    className="p-1"
+                    name="username"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="password" className="text-sm">
+                    Enter Password
+                  </label>
+                  <input
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className="p-1"
+                    name="password"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="bg-[#7A3274] text-white p-2 text-sm rounded-sm w-[25%]"
+                >
+                  SignIn
+                </button>
+              </form>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+      <Toaster className="bg-slate-200"></Toaster>
+    </>
   );
 };
 

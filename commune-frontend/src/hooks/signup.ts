@@ -6,7 +6,7 @@ interface UserData {
   password: string;
 }
 
-async function useSignup(data: UserData): Promise<boolean> {
+async function useSignup(data: UserData): Promise<any> {
   try {
     const response = await axios.post(
       "http://localhost:8080/api/v1/user/signup",
@@ -19,7 +19,6 @@ async function useSignup(data: UserData): Promise<boolean> {
     );
     return response.data;
   } catch (error: any) {
-    console.error("Error during signup:", error);
     return error.response.data;
   }
 }
