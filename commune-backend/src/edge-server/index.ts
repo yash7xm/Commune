@@ -33,6 +33,7 @@ export function socketServer(server: HttpServer) {
       users.push({
         userID: id,
         username: socket.handshake.auth.username,
+        name: socket.handshake.auth.name,
       });
     }
     socket.emit("users", users);

@@ -22,7 +22,7 @@ const Home = () => {
               },
             }
           );
-          connectToSocketServer(response.data.data.username);
+          connectToSocketServer(response.data.data.username, response.data.data.name);
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
@@ -32,9 +32,8 @@ const Home = () => {
     fetchData();
   }, [loggedIn]);
 
-  const connectToSocketServer = (username: string) => {
-    console.log(username);
-    socket.auth = { username };
+  const connectToSocketServer = (username: string, name: string) => {
+    socket.auth = { username, name };
     socket.connect();
   };
 
