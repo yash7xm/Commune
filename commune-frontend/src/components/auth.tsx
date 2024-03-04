@@ -8,26 +8,43 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
 
 const Auth = () => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    console.log(formData.get("name"));
+  };
+
   return (
-    <Tabs defaultValue="register" className="w-[350px]">
+    <Tabs defaultValue="signup" className="w-[350px]">
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="register">Register</TabsTrigger>
-        <TabsTrigger value="login">Login</TabsTrigger>
+        <TabsTrigger value="signup">SignUp</TabsTrigger>
+        <TabsTrigger value="signin">SignIn</TabsTrigger>
       </TabsList>
-      <TabsContent value="register">
+      <TabsContent value="signup">
         <Card className="w-[350px]">
           <CardHeader>
-            <CardTitle>Register</CardTitle>
+            <CardTitle>SignUp</CardTitle>
             <CardDescription>Create Account</CardDescription>
           </CardHeader>
           <CardContent>
-            <form className="flex flex-col gap-4">
+            <form onSubmit={handleFormSubmit} className="flex flex-col gap-4">
+              <div>
+                <label htmlFor="" className="text-sm">
+                  Enter name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Username"
+                  className="border outline-none p-1 rounded-sm"
+                  name="name"
+                />
+              </div>
               <div>
                 <label htmlFor="" className="text-sm">
                   Enter username
@@ -36,6 +53,7 @@ const Auth = () => {
                   type="text"
                   placeholder="Username"
                   className="border outline-none p-1 rounded-sm"
+                  name="username"
                 />
               </div>
               <div>
@@ -43,28 +61,41 @@ const Auth = () => {
                   Enter Password
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   placeholder="Password"
                   className="border outline-none p-1 rounded-sm"
+                  name="password"
                 />
               </div>
+              <button
+                type="submit"
+                className="bg-[#7A3274] text-white p-2 text-sm rounded-sm w-[25%]"
+              >
+                Register
+              </button>
             </form>
           </CardContent>
-          <CardFooter>
-            <button className="bg-[#7A3274] text-white p-2 text-sm rounded-sm">
-              Register
-            </button>
-          </CardFooter>
         </Card>
       </TabsContent>
-      <TabsContent value="login">
+      <TabsContent value="signin">
         <Card className="w-[350px]">
           <CardHeader>
-            <CardTitle>LogIn</CardTitle>
+            <CardTitle>SignIn</CardTitle>
             <CardDescription>Welcome Back</CardDescription>
           </CardHeader>
           <CardContent>
-            <form className="flex flex-col gap-4">
+            <form onSubmit={handleFormSubmit} className="flex flex-col gap-4">
+              <div>
+                <label htmlFor="" className="text-sm">
+                  Enter name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Username"
+                  className="border outline-none p-1 rounded-sm"
+                  name="name"
+                />
+              </div>
               <div>
                 <label htmlFor="" className="text-sm">
                   Enter username
@@ -73,6 +104,7 @@ const Auth = () => {
                   type="text"
                   placeholder="Username"
                   className="border outline-none p-1 rounded-sm"
+                  name="username"
                 />
               </div>
               <div>
@@ -80,18 +112,20 @@ const Auth = () => {
                   Enter Password
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   placeholder="Password"
                   className="border outline-none p-1 rounded-sm"
+                  name="password"
                 />
               </div>
+              <button
+                type="submit"
+                className="bg-[#7A3274] text-white p-2 text-sm rounded-sm w-[25%]"
+              >
+                SignIn
+              </button>
             </form>
           </CardContent>
-          <CardFooter>
-            <button className="bg-[#7A3274] text-white  p-2 text-sm rounded-sm">
-              Login
-            </button>
-          </CardFooter>
         </Card>
       </TabsContent>
     </Tabs>
