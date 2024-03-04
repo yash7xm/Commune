@@ -33,6 +33,21 @@ function ValidateAuthRequest(req: Request, res: Response, next: NextFunction) {
   next();
 }
 
+async function checkAuth(req: any, res: Response, next: NextFunction) {
+  try {
+    const response = await UserService.isAuthenticated(
+      req.headers["x-access-token"]
+    );
+    if (response) {
+      req.user = response; // setting the user id in the req object
+      next();
+    }
+  } catch (error: any) {
+    return res.status(error.statusCode).json(error);
+  }
+}
+
 module.exports = {
   ValidateAuthRequest,
+  checkAuth,
 };

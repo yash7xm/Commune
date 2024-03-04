@@ -17,4 +17,6 @@ router.post(
   UserController.signin
 );
 
+router.get("/id", AuthRequestMiddlewares.checkAuth, UserController.getUser);
+
 export default router;

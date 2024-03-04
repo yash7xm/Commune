@@ -51,7 +51,53 @@ async function signin(data: any) {
   }
 }
 
+async function isAuthenticated(token: string) {
+  try {
+    if (!token) {
+      throw new AppError("Missing JWT token", StatusCodes.BAD_REQUEST);
+    }
+    const response = Auth.verifyToken(token);
+    const user = await userRepo.get(response.id);
+    if (!user) {
+      throw new AppError("No user found", StatusCodes.NOT_FOUND);
+    }
+    return user.id;
+  } catch (error: any) {
+    if (error instanceof AppError) throw error;
+    if (error.name == "JsonWebTokenError") {
+      throw new AppError("Invalid JWT token", StatusCodes.BAD_REQUEST);
+    }
+    if (error.name == "TokenExpiredError") {
+      throw new AppError("JWT token expired", StatusCodes.BAD_REQUEST);
+    }
+    throw new AppError(
+      "Something went wrong",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
+async function getUser(id: any) {
+  try {
+    const user = await userRepo.get(id);
+    return user;
+  } catch (error: any) {
+    if (error.statusCode == StatusCodes.NOT_FOUND) {
+      throw new AppError(
+        "The user you requested is not present",
+        error.statusCode
+      );
+    }
+    throw new AppError(
+      "Cannot fetch data of the requested user",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 module.exports = {
   create,
   signin,
+  isAuthenticated,
+  getUser,
 };

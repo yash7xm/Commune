@@ -40,7 +40,19 @@ async function signin(req: Request, res: Response) {
   }
 }
 
+async function getUser(req: any, res: Response) {
+  try {
+    const user = await UserService.getUser(req.user);
+    SuccessResponse.data = user;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
+  }
+}
+
 module.exports = {
   signup,
   signin,
+  getUser,
 };

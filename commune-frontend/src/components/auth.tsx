@@ -15,6 +15,7 @@ import {
 import { useSignup, useSignin } from "../hooks";
 import { useState } from "react";
 import { Toaster, toast } from "sonner";
+import socket from "../config/socket-config";
 
 interface UserData {
   name: string;
@@ -34,6 +35,11 @@ const Auth = ({ handleLoggedIn }: any) => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const connectToSocketServer = (username: string) => {
+    socket.auth = { username };
+    socket.connect();
   };
 
   const handleSignupForm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -57,6 +63,7 @@ const Auth = ({ handleLoggedIn }: any) => {
       toast(res.message);
       localStorage.setItem("commune-jwt", `${res.data}`);
       handleLoggedIn(true);
+      connectToSocketServer(formData.username);
     } else {
       toast(res.message, {
         description: res.error.explanation,
