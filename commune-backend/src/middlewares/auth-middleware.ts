@@ -1,6 +1,7 @@
 const { ErrorResponse } = require("../utils/common");
 import { Request, Response, NextFunction } from "express";
 const { AppError } = require("../utils");
+import { StatusCodes } from "http-status-codes";
 
 const { UserService } = require("../services");
 
