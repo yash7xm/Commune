@@ -1,1 +1,4 @@
-export { handleIncomingMessage as HandleIncomingMessage } from "./message-service";
+module.exports = {
+  HandleIncomingMessage: require("./message-service"),
+  UserService: require("./user-service"),
+};
