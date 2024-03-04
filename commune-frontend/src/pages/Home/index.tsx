@@ -3,6 +3,7 @@ import Auth from "../../components/auth";
 import Chat from "../../components/chat";
 import Message from "../../components/message";
 import socket from "../../config/socket-config";
+import axios from "axios";
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(
@@ -10,12 +11,32 @@ const Home = () => {
   );
 
   useEffect(() => {
-    if (loggedIn) {
-      // localStorage.clear();
-    }
-    console.log(loggedIn);
-    console.log(localStorage.getItem("commune-jwt"));
-  }, []);
+    const fetchData = async () => {
+      if (loggedIn) {
+        try {
+          const response = await axios.get(
+            "http://localhost:8080/api/v1/user/id",
+            {
+              headers: {
+                "x-access-token": localStorage.getItem("commune-jwt") || "",
+              },
+            }
+          );
+          connectToSocketServer(response.data.data.username);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+
+    fetchData();
+  }, [loggedIn]);
+
+  const connectToSocketServer = (username: string) => {
+    console.log(username);
+    socket.auth = { username };
+    socket.connect();
+  };
 
   const handleLoggedIn = (value: boolean) => {
     setLoggedIn(value);
