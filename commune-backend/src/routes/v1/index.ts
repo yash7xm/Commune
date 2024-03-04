@@ -1,11 +1,11 @@
 import express from "express";
-import messageRoutes from "./message-routes";
+// import messageRoutes from "./message-routes";
 
-const { userRoutes } = require("./user-routes");
+import userRoutes  from "./user-routes"
 
 const router = express.Router();
 
-router.use("/msg", messageRoutes);
+// router.use("/msg", messageRoutes);
 
 router.use("/user", userRoutes);
 

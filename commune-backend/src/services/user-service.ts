@@ -1,5 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
-const { UserRepository, RoleRepository } = require("../repositories");
+const { UserRepository } = require("../repositories");
 const { AppError } = require("../utils");
 
 const userRepo = new UserRepository();

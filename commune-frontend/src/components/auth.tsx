@@ -12,12 +12,33 @@ import {
   CardTitle,
 } from "../components/ui/card";
 
+import useSignup from "../hooks/signup";
+import { useState } from "react";
+
+interface UserData {
+  name: string;
+  username: string;
+  password: string;
+}
+
 const Auth = () => {
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [formData, setFormData] = useState<UserData>({
+    name: "",
+    username: "",
+    password: "",
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSignupForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    console.log(formData.get("name"));
+    const res = await useSignup(formData);
+    console.log(res);
   };
 
   return (
@@ -33,37 +54,46 @@ const Auth = () => {
             <CardDescription>Create Account</CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleFormSubmit} className="flex flex-col gap-4">
+            <form onSubmit={handleSignupForm} className="flex flex-col gap-4">
               <div>
-                <label htmlFor="" className="text-sm">
+                <label htmlFor="name" className="text-sm">
                   Enter name
                 </label>
                 <input
                   type="text"
-                  placeholder="Username"
-                  className="border outline-none p-1 rounded-sm"
+                  id="name"
+                  placeholder="Name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="p-1"
                   name="name"
                 />
               </div>
               <div>
-                <label htmlFor="" className="text-sm">
+                <label htmlFor="username" className="text-sm">
                   Enter username
                 </label>
                 <input
                   type="text"
+                  id="username"
                   placeholder="Username"
-                  className="border outline-none p-1 rounded-sm"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  className="p-1"
                   name="username"
                 />
               </div>
               <div>
-                <label htmlFor="" className="text-sm">
+                <label htmlFor="password" className="text-sm">
                   Enter Password
                 </label>
                 <input
                   type="password"
+                  id="password"
                   placeholder="Password"
-                  className="border outline-none p-1 rounded-sm"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className="p-1"
                   name="password"
                 />
               </div>
@@ -84,37 +114,46 @@ const Auth = () => {
             <CardDescription>Welcome Back</CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleFormSubmit} className="flex flex-col gap-4">
+            <form onSubmit={handleSignupForm} className="flex flex-col gap-4">
               <div>
-                <label htmlFor="" className="text-sm">
+                <label htmlFor="name" className="text-sm">
                   Enter name
                 </label>
                 <input
                   type="text"
-                  placeholder="Username"
-                  className="border outline-none p-1 rounded-sm"
+                  id="name"
+                  placeholder="Name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="p-1"
                   name="name"
                 />
               </div>
               <div>
-                <label htmlFor="" className="text-sm">
+                <label htmlFor="username" className="text-sm">
                   Enter username
                 </label>
                 <input
                   type="text"
+                  id="username"
                   placeholder="Username"
-                  className="border outline-none p-1 rounded-sm"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  className="p-1"
                   name="username"
                 />
               </div>
               <div>
-                <label htmlFor="" className="text-sm">
+                <label htmlFor="password" className="text-sm">
                   Enter Password
                 </label>
                 <input
                   type="password"
+                  id="password"
                   placeholder="Password"
-                  className="border outline-none p-1 rounded-sm"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className="p-1"
                   name="password"
                 />
               </div>

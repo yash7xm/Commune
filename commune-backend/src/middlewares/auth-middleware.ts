@@ -1,5 +1,6 @@
 const { ErrorResponse } = require("../utils/common");
 import { Request, Response, NextFunction } from "express";
+const { AppError } = require("../utils");
 
 const { UserService } = require("../services");
 
