@@ -22,7 +22,7 @@ interface UserData {
   password: string;
 }
 
-const Auth = () => {
+const Auth = ({ handleLoggedIn }: any) => {
   const [formData, setFormData] = useState<UserData>({
     name: "",
     username: "",
@@ -41,6 +41,7 @@ const Auth = () => {
     const res = await useSignup(formData);
     if (res.success) {
       toast(res.message);
+      handleSigninForm(e); // auto sign in after sucessfull signup
     } else {
       toast(res.message, {
         description: res.error.explanation[0],
@@ -54,6 +55,8 @@ const Auth = () => {
     const res = await useSignin(formData);
     if (res.success) {
       toast(res.message);
+      localStorage.setItem("commune-jwt", `${res.data}`);
+      handleLoggedIn(true);
     } else {
       toast(res.message, {
         description: res.error.explanation,
