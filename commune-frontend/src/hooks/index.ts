@@ -1,3 +1,3 @@
-import useSignup from "./signup";
+import { useSignup, useSignin } from "./auth";
 
-export { useSignup }
+export { useSignup, useSignin };

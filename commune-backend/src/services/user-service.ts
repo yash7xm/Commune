@@ -32,7 +32,7 @@ async function signin(data: any) {
     const user = await userRepo.getUserByUsername(data.username);
     if (!user) {
       throw new AppError(
-        "No user found for the given email",
+        "No user found for the given username",
         StatusCodes.NOT_FOUND
       );
     }
@@ -53,4 +53,5 @@ async function signin(data: any) {
 
 module.exports = {
   create,
+  signin,
 };

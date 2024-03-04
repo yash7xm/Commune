@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "../components/ui/card";
 
-import useSignup from "../hooks/signup";
+import { useSignup, useSignin } from "../hooks";
 import { useState } from "react";
 import { Toaster, toast } from "sonner";
 
@@ -46,7 +46,20 @@ const Auth = () => {
         description: res.error.explanation[0],
       });
     }
-    console.log(res.message);
+  };
+
+  const handleSigninForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(formData);
+    const res = await useSignin(formData);
+    if (res.success) {
+      toast(res.message);
+    } else {
+      toast(res.message, {
+        description: res.error.explanation,
+      });
+    }
+    console.log(res);
   };
 
   return (
@@ -123,7 +136,7 @@ const Auth = () => {
               <CardDescription>Welcome Back</CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSignupForm} className="flex flex-col gap-4">
+              <form onSubmit={handleSigninForm} className="flex flex-col gap-4">
                 <div>
                   <label htmlFor="name" className="text-sm">
                     Enter name
