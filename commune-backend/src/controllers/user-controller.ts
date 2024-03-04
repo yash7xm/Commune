@@ -2,6 +2,8 @@ const { UserService } = require("../services");
 const { SuccessResponse, ErrorResponse } = require("../utils/common");
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 /**
  * POST : /signup
@@ -9,12 +11,11 @@ import { StatusCodes } from "http-status-codes";
  */
 
 async function signup(req: Request, res: Response) {
-  console.log(req.body);
   try {
     const user = await UserService.create({
       name: req.body.name,
       username: req.body.username,
-      password: req.body.password,
+      password: bcrypt.hashSync(req.body.password, saltRounds),
     });
     SuccessResponse.data = user;
     return res.status(StatusCodes.CREATED).json(SuccessResponse);

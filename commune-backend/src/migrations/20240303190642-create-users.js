@@ -22,7 +22,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-          len: [3, 50],
+          len: [3, 80],
         },
       },
       createdAt: {
