@@ -1,4 +1,4 @@
-import express from "express"
+import express from "express";
 
 const router = express.Router();
 
@@ -9,6 +9,12 @@ router.post(
   "/signup",
   AuthRequestMiddlewares.ValidateAuthRequest,
   UserController.signup
+);
+
+router.post(
+  "/signin",
+  AuthRequestMiddlewares.ValidateAuthRequest,
+  UserController.signin
 );
 
 export default router;
