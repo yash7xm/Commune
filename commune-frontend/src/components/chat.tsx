@@ -1,6 +1,7 @@
 import { ChevronDown } from "lucide-react";
 import socket from "../config/socket-config";
 import { useEffect, useState } from "react";
+import AddUserDialog from "./addUserDialog";
 
 const Chat = () => {
   const [users, setUsers] = useState<any>([]);
@@ -25,11 +26,16 @@ const Chat = () => {
   return (
     <div className="h-[95%] w-[25%] rounded-s-md bg-[#3F0E40] p-3">
       <div className="text-white text-start text-lg mb-8 px-2">Commune</div>
-      <div className="px-4 text-white mb-4 text-sm flex gap-1 items-center">
+      <div className="px-4 text-white mb-4 text-sm flex gap-1 items-center justify-between">
+        <div className="flex gap-1">
+          <span>
+            <ChevronDown size={18}/>
+          </span>{" "}
+          <span>Direct messages</span>
+        </div>
         <span>
-          <ChevronDown />
-        </span>{" "}
-        <span>Direct messages</span>
+          <AddUserDialog />
+        </span>
       </div>
       <div className="h-[40%] flex flex-col gap-2">
         {users.map((user: any) => (
