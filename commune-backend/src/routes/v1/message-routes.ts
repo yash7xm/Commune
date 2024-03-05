@@ -14,6 +14,7 @@ router.post(
   AuthRequestMiddlewares.checkAuth,
   MsgRequestMiddlewares.checkUserExist,
   MsgRequestMiddlewares.checkChannelAlreadyExists,
+  MessageController.addChannel,
   MessageController.addFriend
 );
 

@@ -1,11 +1,35 @@
-const { MembershipRepository } = require("../repositories");
+const { MembershipRepository, ChannelRepository } = require("../repositories");
 import { StatusCodes } from "http-status-codes";
 const { AppError } = require("../utils");
 
 const membershipRepo = new MembershipRepository();
+const channelRepo = new ChannelRepository();
+
+async function addChannel(data: any) {
+  try {
+    const response = await channelRepo.create(data);
+    return response;
+  } catch (error: any) {
+    if (
+      error.name == "SequelizeValidationError" ||
+      error.name == "SequelizeUniqueConstraintError"
+    ) {
+      let explanation: any = [];
+      error.errors.forEach((err: any) => {
+        explanation.push(err.message);
+      });
+      throw new AppError(explanation, StatusCodes.BAD_REQUEST);
+    }
+    throw new AppError(
+      "Cannot create a new user object",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
 
 async function addFriend(data: any) {
   try {
+    console.log(data);
     const response = await membershipRepo.create(data);
     return response;
   } catch (error: any) {
@@ -46,6 +70,7 @@ async function isChannel(data: any) {
 }
 
 module.exports = {
+  addChannel,
   addFriend,
   isChannel,
 };

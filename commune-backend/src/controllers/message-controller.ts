@@ -2,15 +2,30 @@ import { Request, Response } from "express";
 import { sendMessageToSocket } from "../edge-server";
 const { MessageService } = require("../services");
 const { SuccessResponse, ErrorResponse } = require("../utils/common");
+const { StatusCodes } = require("http-status-codes");
+
+async function addChannel(req: any, res: Response, next: any) {
+  try {
+    const channel = await MessageService.addChannel({
+      organization: req.body.organization,
+      name: req.body.channelName,
+      type: req.body.type,
+    });
+    req.channelId = channel.id;
+    next();
+  } catch (error: any) {
+    ErrorResponse.error = error;
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
 
 async function addFriend(req: any, res: Response) {
   try {
     const data = {
-      userId: req.user1,
       channelId: req.channelId,
-      checkpoint: Date.now(),
+      userId: req.user,
+      checkpoint: 1,
     };
-
     const response = await MessageService.addFriend(data);
     SuccessResponse.data = response;
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
@@ -21,8 +36,9 @@ async function addFriend(req: any, res: Response) {
 }
 
 module.exports = {
+  addChannel,
   addFriend,
-}
+};
 
 // export async function messageController(req: Request, res: Response) {
 //   const msg = req.body.msg;
@@ -35,4 +51,3 @@ module.exports = {
 
 //   res.sendStatus(200);
 // }
-
