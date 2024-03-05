@@ -29,7 +29,7 @@ async function checkChannelAlreadyExists(
       next();
     }
   } catch (error: any) {
-    return res.status(error.statusCode).json(error);
+    next();
   }
 }
 
