@@ -17,10 +17,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
         as: "userDetail",
       });
-      this.belongsTo(models.messages, {
-        foreignKey: "checkpoint",
-        as: "ts",
-      });
     }
   }
   membership.init(
@@ -30,10 +26,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      checkpoint: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

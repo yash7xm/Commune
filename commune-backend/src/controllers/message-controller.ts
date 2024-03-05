@@ -24,7 +24,6 @@ async function addFriend(req: any, res: Response) {
     const data = {
       channelId: req.channelId,
       userId: req.user,
-      checkpoint: 1,
     };
     const response = await MessageService.addFriend(data);
     SuccessResponse.data = response;

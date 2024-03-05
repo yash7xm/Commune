@@ -27,15 +27,6 @@ module.exports = {
         },
         onDelete: "CASCADE",
       },
-      checkpoint: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "messages",
-          key: "id",
-        },
-        onDelete: "CASCADE",
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

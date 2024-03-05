@@ -18,11 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
         as: "userDetail",
       });
-
-      this.hasMany(models.membership, {
-        foreignKey: "checkpoint",
-        onDelete: "CASCADE",
-      });
     }
   }
   messages.init(
