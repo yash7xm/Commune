@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "channelId",
         onDelete: "CASCADE",
       });
+      this.hasMany(models.membership, {
+        foreignKey: "channelId",
+        onDelete: "CASCADE",
+      });
     }
   }
   channels.init(
