@@ -21,15 +21,21 @@ async function checkChannelAlreadyExists(
   next: NextFunction
 ) {
   try {
-    const response = await MessageService.isChannel({
+    const channelExists = await MessageService.isChannel({
       user1: req.user,
       user2: req.user2,
     });
-    if (!response) {
+
+    if (!channelExists) {
       next();
+    } else {
+      const errorMessage = "Channel already exists between the users.";
+      const error = new AppError([errorMessage], StatusCodes.BAD_REQUEST);
+      ErrorResponse.error = error;
+      res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
     }
   } catch (error: any) {
-    next();
+    return res.status(error.statusCode).json(error);
   }
 }
 

@@ -21,12 +21,15 @@ async function addChannel(req: any, res: Response, next: any) {
 
 async function addFriend(req: any, res: Response) {
   try {
-    const data = {
+    const user1Add = await MessageService.addFriend({
       channelId: req.channelId,
       userId: req.user,
-    };
-    const response = await MessageService.addFriend(data);
-    SuccessResponse.data = response;
+    });
+    const user2Add = await MessageService.addFriend({
+      channelId: req.channelId,
+      userId: req.user2,
+    });
+    SuccessResponse.data = user1Add + user2Add;
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error: any) {
     ErrorResponse.error = error;

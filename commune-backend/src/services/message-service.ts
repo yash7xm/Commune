@@ -29,7 +29,6 @@ async function addChannel(data: any) {
 
 async function addFriend(data: any) {
   try {
-    console.log(data);
     const response = await membershipRepo.create(data);
     return response;
   } catch (error: any) {
