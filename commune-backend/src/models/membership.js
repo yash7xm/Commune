@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       this.belongsTo(models.messages, {
         foreignKey: "checkpoint",
-        as: "checkpoint",
+        as: "ts",
       });
     }
   }

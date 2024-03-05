@@ -1,8 +1,17 @@
 import express from "express";
-import { MessageController } from "../../controllers";
+
+const {
+  AuthRequestMiddlewares,
+  MsgRequestMiddlewares,
+} = require("../../middlewares");
 
 const router = express.Router();
 
-router.post("/send", MessageController);
+router.post(
+  "/addFriend",
+  AuthRequestMiddlewares.checkAuth,
+  MsgRequestMiddlewares.checkUserExist,
+  MsgRequestMiddlewares.checkChannelAlreadyExists
+);
 
 export default router;

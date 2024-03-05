@@ -95,9 +95,28 @@ async function getUser(id: any) {
   }
 }
 
+async function getUserByUsername(username: string) {
+  try {
+    const user = await userRepo.getUserByUsername(username);
+    return user.id;
+  } catch (error: any) {
+    if (error.statusCode == StatusCodes.NOT_FOUND) {
+      throw new AppError(
+        "The user you requested is not present",
+        error.statusCode
+      );
+    }
+    throw new AppError(
+      "Cannot fetch data of the requested user",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 module.exports = {
   create,
   signin,
   isAuthenticated,
   getUser,
+  getUserByUsername,
 };
