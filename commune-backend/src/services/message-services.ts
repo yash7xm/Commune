@@ -1,8 +1,8 @@
-const { MessageRespository } = require("../repositories");
+const { MessageRepository } = require("../repositories");
 import { StatusCodes } from "http-status-codes";
 const { AppError } = require("../utils");
 
-const messageRepo = new MessageRespository();
+const messageRepo = new MessageRepository();
 
 async function sendMessage(data: any) {
   try {
