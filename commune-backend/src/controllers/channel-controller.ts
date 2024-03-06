@@ -5,7 +5,7 @@ const { SuccessResponse, ErrorResponse } = require("../utils/common");
 const { StatusCodes } = require("http-status-codes");
 
 async function addChannel(req: any, res: Response, next: any) {
-  const channelName = `${req.user}~${req.user2}`
+  const channelName = `${req.user}~${req.user2}`;
   try {
     const channel = await ChannelService.addChannel({
       organization: req.body.organization,
@@ -38,9 +38,21 @@ async function addFriend(req: any, res: Response) {
   }
 }
 
+async function getAll(req: any, res: Response) {
+  try {
+    const response = await ChannelService.getAll(req.user);
+    SuccessResponse.data = response;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error: any) {
+    ErrorResponse.error = error;
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+
 module.exports = {
   addChannel,
   addFriend,
+  getAll,
 };
 
 // export async function messageController(req: Request, res: Response) {

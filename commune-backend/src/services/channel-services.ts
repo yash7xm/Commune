@@ -68,8 +68,27 @@ async function isChannel(data: any) {
   }
 }
 
+async function getAll(data: any) {
+  try {
+    const response = await membershipRepo.getAll(data);
+    return response;
+  } catch (error: any) {
+    if (error.statusCode == StatusCodes.NOT_FOUND) {
+      throw new AppError(
+        "The user you requested is not present",
+        error.statusCode
+      );
+    }
+    throw new AppError(
+      "Cannot fetch data of the requested user",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 module.exports = {
   addChannel,
   addFriend,
   isChannel,
+  getAll,
 };
