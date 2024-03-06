@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 const { AppError } = require("../utils");
 import { StatusCodes } from "http-status-codes";
 
-const { UserService, MessageService } = require("../services");
+const { UserService, ChannelService } = require("../services");
 
 async function checkUserExist(req: any, res: Response, next: NextFunction) {
   try {
@@ -21,7 +21,7 @@ async function checkChannelAlreadyExists(
   next: NextFunction
 ) {
   try {
-    const channelExists = await MessageService.isChannel({
+    const channelExists = await ChannelService.isChannel({
       user1: req.user,
       user2: req.user2,
     });
@@ -35,7 +35,7 @@ async function checkChannelAlreadyExists(
       res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
     }
   } catch (error: any) {
-    return res.status(error.statusCode).json(error);
+    next();
   }
 }
 

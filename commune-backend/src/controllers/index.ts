@@ -1,4 +1,4 @@
 module.exports = {
   UserController: require("./user-controller"),
-  MessageController: require("./message-controller"),
+  ChannelController: require("./channel-controller"),
 };

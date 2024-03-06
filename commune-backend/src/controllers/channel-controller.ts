@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { sendMessageToSocket } from "../edge-server";
-const { MessageService } = require("../services");
+const { ChannelService } = require("../services");
 const { SuccessResponse, ErrorResponse } = require("../utils/common");
 const { StatusCodes } = require("http-status-codes");
 
 async function addChannel(req: any, res: Response, next: any) {
   try {
-    const channel = await MessageService.addChannel({
+    const channel = await ChannelService.addChannel({
       organization: req.body.organization,
       name: req.body.channelName,
       type: req.body.type,
@@ -21,11 +21,11 @@ async function addChannel(req: any, res: Response, next: any) {
 
 async function addFriend(req: any, res: Response) {
   try {
-    const user1Add = await MessageService.addFriend({
+    const user1Add = await ChannelService.addFriend({
       channelId: req.channelId,
       userId: req.user,
     });
-    const user2Add = await MessageService.addFriend({
+    const user2Add = await ChannelService.addFriend({
       channelId: req.channelId,
       userId: req.user2,
     });

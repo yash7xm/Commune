@@ -1,11 +1,11 @@
 import express from "express";
-import messageRoutes from "./message-routes";
+import channelRoutes from "./channel-routes";
 
 import userRoutes from "./user-routes";
 
 const router = express.Router();
 
-router.use("/msg", messageRoutes);
+router.use("/msg", channelRoutes);
 
 router.use("/user", userRoutes);
 
