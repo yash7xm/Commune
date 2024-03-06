@@ -1,5 +1,5 @@
 const CrudRepository = require("./crud-repository");
-const { membership, users, channels  } = require("../models");
+const { membership, users, channels } = require("../models");
 
 class MembershipRepository extends CrudRepository {
   constructor() {
@@ -17,11 +17,6 @@ class MembershipRepository extends CrudRepository {
         userId: userId,
       },
       include: [
-        {
-          model: users,
-          required: true,
-          as: "userDetail",
-        },
         {
           model: channels,
           required: true,

@@ -2,26 +2,28 @@ import { ChevronDown } from "lucide-react";
 import socket from "../config/socket-config";
 import { useEffect, useState } from "react";
 import AddUserDialog from "./addUserDialog";
+import { getAllChannels } from "../hooks";
 
 const Chat = () => {
-  const [users, setUsers] = useState<any>([]);
+  const [channels, setChannels] = useState<any>([]);
 
   useEffect(() => {
-    socket.on("users", (users) => {
-      users.forEach((user: any) => {
-        user.self = user.userID === socket.id;
-      });
+    const fetchAllChannels = async () => {
+      try {
+        const channels = await getAllChannels();
+        console.log(channels);
+        setChannels(channels.data);
+      } catch (error) {
+        console.error("Error fetching channels:", error);
+      }
+    };
 
-      users = users.sort((a: any, b: any) => {
-        if (a.self) return -1;
-        if (b.self) return 1;
-        if (a.username < b.username) return -1;
-        return a.username > b.username ? 1 : 0;
-      });
-
-      setUsers(users);
-    });
+    fetchAllChannels();
   }, []);
+
+  const handleChatClick = (channelId: any) => {
+    console.log(channelId);
+  };
 
   return (
     <div className="h-[95%] w-[25%] rounded-s-md bg-[#3F0E40] p-3">
@@ -29,7 +31,7 @@ const Chat = () => {
       <div className="px-4 text-white mb-4 text-sm flex gap-1 items-center justify-between">
         <div className="flex gap-1">
           <span>
-            <ChevronDown size={18}/>
+            <ChevronDown size={18} />
           </span>{" "}
           <span>Direct messages</span>
         </div>
@@ -38,9 +40,10 @@ const Chat = () => {
         </span>
       </div>
       <div className="h-[40%] flex flex-col gap-2">
-        {users.map((user: any) => (
+        {channels.map((channel: any) => (
           <div
-            key={user.userID}
+            key={channel.channelDetail.id}
+            onClick={() => handleChatClick(channel.channelDetail.id)}
             className="user flex h-[15%] gap-2 items-center py-1 px-2 hover:bg-[#7A3274] rounded-sm cursor-pointer"
           >
             <div className="user-img h-full">
@@ -50,7 +53,9 @@ const Chat = () => {
                 alt=""
               />
             </div>
-            <div className="user-name text-white text-sm">{user.name}</div>
+            <div className="user-name text-white text-sm">
+              {channel.channelDetail.name}
+            </div>
           </div>
         ))}
       </div>
