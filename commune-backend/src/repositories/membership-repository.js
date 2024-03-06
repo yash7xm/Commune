@@ -1,5 +1,5 @@
 const CrudRepository = require("./crud-repository");
-const { membership } = require("../models");
+const { membership, users, channels  } = require("../models");
 
 class MembershipRepository extends CrudRepository {
   constructor() {
@@ -9,6 +9,28 @@ class MembershipRepository extends CrudRepository {
   async getByUserId(userId) {
     const user = await membership.findOne({ where: { userId: userId } });
     return user;
+  }
+
+  async getAll(userId) {
+    const response = await membership.findAll({
+      where: {
+        userId: userId,
+      },
+      order: sort,
+      include: [
+        {
+          model: users,
+          required: true,
+          as: "userDetail",
+        },
+        {
+          model: channels,
+          required: true,
+          as: "channelDetail",
+        },
+      ],
+    });
+    return response;
   }
 }
 
