@@ -5,10 +5,11 @@ const { SuccessResponse, ErrorResponse } = require("../utils/common");
 const { StatusCodes } = require("http-status-codes");
 
 async function addChannel(req: any, res: Response, next: any) {
+  const channelName = `${req.user}~${req.user2}`
   try {
     const channel = await ChannelService.addChannel({
       organization: req.body.organization,
-      name: req.body.channelName,
+      name: channelName,
       type: req.body.type,
     });
     req.channelId = channel.id;
