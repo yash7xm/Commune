@@ -1,4 +1,4 @@
 import { useSignup, useSignin } from "./auth";
-import { getAllChannels } from "./chat";
+import { getAllChannels, filterChannelName } from "./chat";
 
-export { useSignup, useSignin, getAllChannels };
+export { useSignup, useSignin, getAllChannels, filterChannelName };

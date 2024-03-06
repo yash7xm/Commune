@@ -2,7 +2,7 @@ import { ChevronDown } from "lucide-react";
 import socket from "../config/socket-config";
 import { useEffect, useState } from "react";
 import AddUserDialog from "./addUserDialog";
-import { getAllChannels } from "../hooks";
+import { getAllChannels, filterChannelName } from "../hooks";
 
 const Chat = () => {
   const [channels, setChannels] = useState<any>([]);
@@ -10,9 +10,10 @@ const Chat = () => {
   useEffect(() => {
     const fetchAllChannels = async () => {
       try {
-        const channels = await getAllChannels();
+        const response = await getAllChannels();
+        const channels = await filterChannelName(response.data);
         console.log(channels);
-        setChannels(channels.data);
+        setChannels(channels);
       } catch (error) {
         console.error("Error fetching channels:", error);
       }
