@@ -18,4 +18,10 @@ router.post(
   ChannelController.addFriend
 );
 
+router.get(
+  "/getAll",
+  AuthRequestMiddlewares.checkAuth,
+  ChannelController.getAll
+);
+
 export default router;

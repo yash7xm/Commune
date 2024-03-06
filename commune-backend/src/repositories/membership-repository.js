@@ -16,7 +16,6 @@ class MembershipRepository extends CrudRepository {
       where: {
         userId: userId,
       },
-      order: sort,
       include: [
         {
           model: users,
