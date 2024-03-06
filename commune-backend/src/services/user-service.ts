@@ -113,10 +113,29 @@ async function getUserByUsername(username: string) {
   }
 }
 
+async function get(data: any) {
+  try {
+    const user = await userRepo.get(data);
+    return user;
+  } catch (error: any) {
+    if (error.statusCode == StatusCodes.NOT_FOUND) {
+      throw new AppError(
+        "The user you requested is not present",
+        error.statusCode
+      );
+    }
+    throw new AppError(
+      "Cannot fetch data of the requested user",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 module.exports = {
   create,
   signin,
   isAuthenticated,
   getUser,
   getUserByUsername,
+  get,
 };

@@ -51,8 +51,20 @@ async function getUser(req: any, res: Response) {
   }
 }
 
+async function get(req: Request, res: Response) {
+  try {
+    const user = await UserService.get(req.params.id);
+    SuccessResponse.data = user;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
+  }
+}
+
 module.exports = {
   signup,
   signin,
   getUser,
+  get
 };
