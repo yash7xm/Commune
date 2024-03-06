@@ -17,24 +17,28 @@ export async function getAllChannels() {
 }
 
 export async function filterChannelName(data: any) {
-  data.map(async (channel: any) => {
-    if (channel.channelDetail.type == "direct message") {
-      const users = channel.channelDetail.name.split("~");
-      if (users[0] != channel.userId) {
-        const user = await fetchUser(users[0]);
-        channel.channelDetail.name = user.name;
-      } else {
-        const user = await fetchUser(users[1]);
-        channel.channelDetail.name = user.name;
+  await Promise.all(
+    data.map(async (channel: any) => {
+      if (channel.channelDetail.type === "direct message") {
+        const users = channel.channelDetail.name.split("~");
+        console.log(users);
+        if (users[0] != channel.userId) {
+          const user = await fetchUser(users[0]);
+          channel.channelDetail.name = user.name;
+        } else {
+          const user = await fetchUser(users[1]);
+          channel.channelDetail.name = user.name;
+        }
       }
-    }
-  });
+    })
+  );
+  return data;
 }
 
 async function fetchUser(userId: any) {
   try {
     const user = await axios.get(`http://localhost:8080/api/v1/user/${userId}`);
-    return user;
+    return user.data.data;
   } catch (error: any) {
     return error.response.data;
   }
