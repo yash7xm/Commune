@@ -3,6 +3,7 @@ import { Server as HttpServer } from "http";
 
 let io: Server;
 let username: any;
+let channelId: string;
 
 export function socketServer(server: HttpServer) {
   io = new Server(server, {
@@ -29,6 +30,7 @@ export function socketServer(server: HttpServer) {
 
     // join room
     socket.on("joinRoom", (roomId: string) => {
+      channelId = roomId;
       socket.join(roomId);
       console.log("joined", roomId);
     });
@@ -40,9 +42,9 @@ export function socketServer(server: HttpServer) {
   });
 }
 
-export function sendMessageToSocket(recipient: string, message: any) {
+export function sendMessageToSocket(message: any) {
   if (io) {
-    io.emit("message", message);
+    io.to(channelId).emit("msg_rcvd", message);
   } else {
     console.error("Socket.IO server is not initialized");
   }

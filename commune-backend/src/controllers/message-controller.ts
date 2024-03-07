@@ -2,6 +2,7 @@ const { MessageService } = require("../services");
 import { Response } from "express";
 const { SuccessResponse, ErrorResponse } = require("../utils/common");
 const { StatusCodes } = require("http-status-codes");
+import {sendMessageToSocket} from "../edge-server"
 
 async function sendMessage(req: any, res: Response) {
   try {
@@ -11,6 +12,8 @@ async function sendMessage(req: any, res: Response) {
       message: req.body.message,
       time: req.body.time,
     });
+    console.log(message);
+    sendMessageToSocket(message);
     SuccessResponse.data = message;
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error: any) {
