@@ -200,7 +200,7 @@ const Auth = ({ handleLoggedIn }: any) => {
           </Card>
         </TabsContent>
       </Tabs>
-      <Toaster className="bg-slate-200"></Toaster>
+      <Toaster></Toaster>
     </>
   );
 };
