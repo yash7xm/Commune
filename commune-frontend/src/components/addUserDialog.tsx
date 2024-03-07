@@ -41,10 +41,14 @@ const AddUserDialog = () => {
       setChannels(res);
       toast(channelAdd.message);
     } else {
-      console.log(channelAdd.error.explanation[0]);
-      toast(channelAdd.message, {
-        description: channelAdd.error.explanation[0],
-      });
+      console.log(channelAdd);
+      if (channelAdd.error) {
+        toast(channelAdd.message, {
+          description: channelAdd.error.explanation[0],
+        });
+      } else {
+        toast(channelAdd.explanation);
+      }
     }
   };
 
