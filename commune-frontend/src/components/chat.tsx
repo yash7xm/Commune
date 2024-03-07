@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import AddUserDialog from "./addUserDialog";
 import { getAllChannels, filterChannelName } from "../hooks";
 
-const Chat = () => {
+const Chat = ({handleStartChat}: any) => {
   const [channels, setChannels] = useState<any>([]);
 
   useEffect(() => {
@@ -22,8 +22,12 @@ const Chat = () => {
     fetchAllChannels();
   }, []);
 
-  const handleChatClick = (channelId: any) => {
+  const handleChatClick = (channelId: any, channelName: any) => {
     console.log(channelId);
+    handleStartChat({
+      channelId: channelId,
+      channelName: channelName,
+    });
   };
 
   return (
@@ -44,7 +48,12 @@ const Chat = () => {
         {channels.map((channel: any) => (
           <div
             key={channel.channelDetail.id}
-            onClick={() => handleChatClick(channel.channelDetail.id)}
+            onClick={() =>
+              handleChatClick(
+                channel.channelDetail.id,
+                channel.channelDetail.name
+              )
+            }
             className="user flex h-[15%] gap-2 items-center py-1 px-2 hover:bg-[#7A3274] rounded-sm cursor-pointer"
           >
             <div className="user-img h-full">
