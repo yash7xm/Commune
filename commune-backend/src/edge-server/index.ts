@@ -27,30 +27,10 @@ export function socketServer(server: HttpServer) {
     console.log("User connected:", socket.id);
     console.log("Username", socket.handshake.auth.username);
 
-    // fetch existing users
-    const users = [];
-    for (let [id, socket] of io.of("/").sockets) {
-      users.push({
-        userID: id,
-        username: socket.handshake.auth.username,
-        name: socket.handshake.auth.name,
-      });
-    }
-    socket.emit("users", users);
-
-    // notify existing users
-    socket.broadcast.emit("user connected", {
-      userID: socket.id,
-      username: socket.username,
-    });
-
-    // handle private messages
-    socket.on("private message", ({ content, to }: any) => {
-      console.log(content);
-      socket.to(to).emit("private message", {
-        content,
-        from: socket.id,
-      });
+    // join room
+    socket.on("joinRoom", (roomId: string) => {
+      socket.join(roomId);
+      console.log("joined", roomId);
     });
 
     // notify users upon disconnection

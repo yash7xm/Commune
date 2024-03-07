@@ -5,6 +5,7 @@ import AddUserDialog from "./addUserDialog";
 import { getAllChannels, filterChannelName } from "../hooks";
 import { useAtom } from 'jotai'
 import channelsAtom from "../atoms/channels-atom";
+import { joinRoom } from "../socket";
 
 
 const Chat = ({handleStartChat}: any) => {
@@ -27,6 +28,7 @@ const Chat = ({handleStartChat}: any) => {
 
   const handleChatClick = (channelId: any, channelName: any) => {
     console.log(channelId);
+    joinRoom(channelId);
     handleStartChat({
       channelId: channelId,
       channelName: channelName,
