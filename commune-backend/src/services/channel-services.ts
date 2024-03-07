@@ -51,9 +51,9 @@ async function addFriend(data: any) {
 
 async function isChannel(data: any) {
   try {
-    const user1 = await membershipRepo.getByUserId(data.user1);
-    const user2 = await membershipRepo.getByUserId(data.user2);
-    return user1.channelId == user2.channelId;
+    const newChanelName = `${data.user1}~${data.user2}`;
+    const channel = await channelRepo.getUserByChannelName(newChanelName);
+    return channel;
   } catch (error: any) {
     if (error.statusCode == StatusCodes.NOT_FOUND) {
       throw new AppError(

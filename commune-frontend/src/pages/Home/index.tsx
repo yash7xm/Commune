@@ -17,6 +17,8 @@ const Home = () => {
     setStartChat(data);
   }
 
+  // localStorage.clear();
+
   useEffect(() => {
     const fetchData = async () => {
       if (loggedIn) {
