@@ -13,14 +13,34 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import { addFriend } from "../hooks/channel";
+import { useSetAtom } from "jotai";
+import channelsAtom from "../atoms/channels-atom";
+import { getAllChannels, filterChannelName } from "../hooks";
 
 const AddUserDialog = () => {
   const [name, setName] = useState("Pedro Duarte");
   const [username, setUsername] = useState("@peduarte");
+  const setChannels = useSetAtom(channelsAtom);
 
-  const handleAddUserFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleAddUserFormSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
-    console.log("form submitted with name:", name, "and username:", username);
+    const data = {
+      organization: "org1",
+      type: "direct message",
+      username: username,
+    };
+    
+    const channelAdd = await addFriend(data);
+    if (channelAdd.success) {
+      const response = await getAllChannels();
+      const res = await filterChannelName(response.data);
+      setChannels(res);
+    } else {
+      console.log(channelAdd.error.explanation[0])
+    }
   };
 
   return (
