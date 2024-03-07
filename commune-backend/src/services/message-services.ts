@@ -7,7 +7,9 @@ const messageRepo = new MessageRepository();
 async function sendMessage(data: any) {
   try {
     const message = await messageRepo.create(data);
-    return message;
+    const createdMessage = await messageRepo.getMessage(message.id);
+    
+    return createdMessage;
   } catch (error: any) {
     if (
       error.name == "SequelizeValidationError" ||
