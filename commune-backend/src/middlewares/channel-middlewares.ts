@@ -35,7 +35,7 @@ async function checkChannelAlreadyExists(
       res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
     }
   } catch (error: any) {
-    next();
+    return res.status(error.statusCode).json(error);
   }
 }
 
