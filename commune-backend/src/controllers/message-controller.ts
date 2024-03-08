@@ -1,8 +1,8 @@
 const { MessageService } = require("../services");
-import { Response } from "express";
+import { Request, Response } from "express";
 const { SuccessResponse, ErrorResponse } = require("../utils/common");
 const { StatusCodes } = require("http-status-codes");
-import {sendMessageToSocket} from "../edge-server"
+import { sendMessageToSocket } from "../edge-server";
 
 async function sendMessage(req: any, res: Response) {
   try {
@@ -22,6 +22,18 @@ async function sendMessage(req: any, res: Response) {
   }
 }
 
+async function getAllMessages(req: Request, res: Response) {
+  try {
+    const messages = await MessageService.getAllMessages(req.params.channelId);
+    SuccessResponse.data = messages;
+    return res.status(StatusCodes.CREATED).json(SuccessResponse);
+  } catch (error: any) {
+    ErrorResponse.error = error;
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+
 module.exports = {
   sendMessage,
+  getAllMessages,
 };

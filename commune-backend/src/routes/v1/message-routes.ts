@@ -11,4 +11,6 @@ router.post(
   MessageController.sendMessage
 );
 
+router.get("/getAll/:channelId", MessageController.getAllMessages);
+
 export default router;

@@ -18,6 +18,20 @@ class MessageRepository extends CrudRepository {
     });
     return message;
   }
+
+  async getAllMessages(channelId) {
+    const msgs = await messages.findAll({
+      where: { channelId: channelId },
+      include: [
+        {
+          model: users,
+          required: true,
+          as: "userDetail",
+        },
+      ],
+    });
+    return msgs;
+  }
 }
 
 module.exports = MessageRepository;

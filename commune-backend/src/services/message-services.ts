@@ -8,7 +8,7 @@ async function sendMessage(data: any) {
   try {
     const message = await messageRepo.create(data);
     const createdMessage = await messageRepo.getMessage(message.id);
-    
+
     return createdMessage;
   } catch (error: any) {
     if (
@@ -28,6 +28,29 @@ async function sendMessage(data: any) {
   }
 }
 
+async function getAllMessages(channelId: string) {
+  try {
+    const messages = await messageRepo.getAllMessages(channelId);
+    return messages;
+  } catch (error: any) {
+    if (
+      error.name == "SequelizeValidationError" ||
+      error.name == "SequelizeUniqueConstraintError"
+    ) {
+      let explanation: any = [];
+      error.errors.forEach((err: any) => {
+        explanation.push(err.message);
+      });
+      throw new AppError(explanation, StatusCodes.BAD_REQUEST);
+    }
+    throw new AppError(
+      "Cannot fetch all the messages",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 module.exports = {
   sendMessage,
+  getAllMessages,
 };
