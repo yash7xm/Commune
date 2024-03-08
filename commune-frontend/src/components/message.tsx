@@ -32,24 +32,58 @@ const Message = ({ data }: any) => {
     console.log(data);
   });
 
+  const imgSrc1 =
+    "https://ca.slack-edge.com/T066456SPEU-U065HLFGW68-g7584f2534fe-72";
+  const imgSrc2 =
+    "https://ca.slack-edge.com/T066456SPEU-U069VD6QQET-gd922c621841-48";
+  const imgSrc3 =
+    "https://ca.slack-edge.com/T066456SPEU-U065C7K5Y0M-g5aea58345cb-24";
+
   return (
     <div className="h-[95%] w-[70%] bg-white rounded-r-md flex flex-col justify-between">
       {/* person you are talking to or the channel name */}
       <div className="h-[10%] border-b">
-        <div className="user flex h-full gap-2 items-center py-1 px-2">
-          <div className="user-img h-[60%]">
+        <div className="user flex h-full gap-2 items-center py-1 px-3">
+          <div className="user-img h-[24px] w-[24px]">
             <img
-              className="h-full rounded-sm"
-              src="https://github.com/shadcn.png"
-              alt=""
+              className="h-full w-full rounded-sm"
+              src={imgSrc2}
+              alt="user-img"
             />
           </div>
           <div className="font-bold text-lg">{data.channelName}</div>
         </div>
       </div>
 
-      <div className="flex-1">
-        <div>Messages will come here</div>
+      {/* All the messages here */}
+      <div className="flex-1 py-3 w-full">
+        <div className="msg flex px-4 gap-2 w-full">
+          <div className="left-side w-[18%]">
+            <div className="user-img py-1 w-full">
+              <img
+                className=" size-[36px] w-full rounded-md"
+                src="https://ca.slack-edge.com/T066456SPEU-U065HLFGW68-g7584f2534fe-72"
+                alt="user-img"
+              />
+            </div>
+          </div>
+          <div className="right-side flex flex-col">
+            <div className="user-detail flex gap-2 items-baseline">
+              <span className="font-bold">Yash Poonia</span>
+              <span className="text-muted-foreground text-xs">2:06 PM</span>
+            </div>
+            <div className="msg-content text-[15px]">
+              This is just a sample message for you buddy This is just a sample
+              message for you buddy This is just a sample message for you buddy
+              This is just a sample message for you buddy This is just a sample
+              message for you buddy This is just a sample message for you buddy
+              This is just a sample message for you buddy This is just a sample
+              message for you buddy This is just a sample message for you buddy
+              This is just a sample message for you buddy This is just a sample
+              message for you buddy This is just a sample message for you buddy
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="h-[10%] mx-4 my-2 rounded-md border">
