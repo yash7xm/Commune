@@ -20,7 +20,13 @@ const MsgComp = ({ msg, index }: any) => {
             {formatTime(msg.createdAt)}
           </span>
         </div>
-        <div className="msg-content text-[15px]">{msg.message}</div>
+        {msg.type ? (
+          <div className="msg-content text-[15px] text-muted-foreground">
+            {msg.message}
+          </div>
+        ) : (
+          <div className="msg-content text-[15px]">{msg.message}</div>
+        )}
       </div>
     </div>
   );

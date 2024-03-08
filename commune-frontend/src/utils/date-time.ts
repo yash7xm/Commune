@@ -14,3 +14,23 @@ export function formatTime(timestamp: string) {
 
   return formattedTime;
 }
+
+export function getCurrentDateTime(): string {
+  const now: Date = new Date();
+  const year: number = now.getFullYear();
+  let month: number | string = now.getMonth() + 1;
+  let day: number | string = now.getDate();
+  let hours: number | string = now.getHours();
+  let minutes: number | string = now.getMinutes();
+  let seconds: number | string = now.getSeconds();
+
+  month = month < 10 ? `0${month}` : month;
+  day = day < 10 ? `0${day}` : day;
+  hours = hours < 10 ? `0${hours}` : hours;
+  minutes = minutes < 10 ? `0${minutes}` : minutes;
+  seconds = seconds < 10 ? `0${seconds}` : seconds;
+
+  const formattedDateTime: string = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+  return formattedDateTime;
+}

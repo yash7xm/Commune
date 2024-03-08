@@ -4,21 +4,21 @@ import { useEffect, useState } from "react";
 import socket from "../config/socket-config";
 import { images } from "../utils/images";
 import MsgComp from "./msg-component";
+import { pseudoMessage } from "../utils/message";
 
 const Message = ({ data }: any) => {
   const [msg, setMsg] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<any>([]);
 
   useEffect(() => {
     const fetchAllMessages = async () => {
       const res = await getAllMessages(data.channelId);
       setMessages(res);
-      console.log(res);
     };
 
     fetchAllMessages();
   }, [data]);
-  
+
   const handleFormSubmit = async (e: any) => {
     e.preventDefault();
     const msgData = {
@@ -26,12 +26,19 @@ const Message = ({ data }: any) => {
       message: msg,
       time: "2024-03-07 18:21:58",
     };
-    const res = await sendMessage(msgData);
-    console.log(res);
+
+    pseudoMessage.message = msg;
+    setMessages((prevMessages: any) => [...prevMessages, pseudoMessage]);
+    await sendMessage(msgData);
+    setMsg("");
   };
 
-  socket.on("msg_rcvd", (data) => {
-    console.log(data);
+  socket.on("msg_rcvd", (receivedData) => {
+    setMessages((prevMessages: any) => {
+      const updatedMessages = [...prevMessages];
+      updatedMessages[updatedMessages.length - 1] = receivedData;
+      return updatedMessages;
+    });
   });
 
   return (
@@ -52,7 +59,7 @@ const Message = ({ data }: any) => {
 
       {/* All the messages here */}
       <div className="flex-1 py-3 w-full">
-        {messages.map((msg, index) => (
+        {messages.map((msg: any, index: number) => (
           <MsgComp key={index} msg={msg} index={index} />
         ))}
       </div>
