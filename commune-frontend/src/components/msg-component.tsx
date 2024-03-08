@@ -1,4 +1,5 @@
 import { images } from "../utils/images";
+import { formatTime } from "../utils/date-time";
 
 const MsgComp = ({ msg, index }: any) => {
   return (
@@ -15,7 +16,9 @@ const MsgComp = ({ msg, index }: any) => {
       <div className="right-side flex flex-col">
         <div className="user-detail flex gap-2 items-baseline">
           <span className="font-bold text-sm">{msg.userDetail.name}</span>
-          <span className="text-muted-foreground text-xs">2:06 PM</span>
+          <span className="text-muted-foreground text-xs">
+            {formatTime(msg.createdAt)}
+          </span>
         </div>
         <div className="msg-content text-[15px]">{msg.message}</div>
       </div>

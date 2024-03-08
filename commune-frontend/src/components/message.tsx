@@ -18,7 +18,7 @@ const Message = ({ data }: any) => {
 
     fetchAllMessages();
   }, [data]);
-
+  
   const handleFormSubmit = async (e: any) => {
     e.preventDefault();
     const msgData = {
