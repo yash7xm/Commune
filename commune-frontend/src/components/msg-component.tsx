@@ -13,7 +13,7 @@ const MsgComp = ({ msg, index }: any) => {
           />
         </div>
       </div>
-      <div className="right-side flex flex-col">
+      <div className="right-side flex flex-col flex-1 overflow-x-hidden">
         <div className="user-detail flex gap-2 items-baseline">
           <span className="font-bold text-sm">{msg.userDetail.name}</span>
           <span className="text-muted-foreground text-xs">
@@ -21,11 +21,11 @@ const MsgComp = ({ msg, index }: any) => {
           </span>
         </div>
         {msg.type ? (
-          <div className="msg-content text-[15px] text-muted-foreground">
+          <div className="msg-content text-[15px] text-muted-foreground w-full">
             {msg.message}
           </div>
         ) : (
-          <div className="msg-content text-[15px]">{msg.message}</div>
+          <div className="msg-content text-[15px] w-full">{msg.message}</div>
         )}
       </div>
     </div>

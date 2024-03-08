@@ -1,6 +1,6 @@
 import { SendHorizontal } from "lucide-react";
 import { sendMessage, getAllMessages } from "../hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import socket from "../config/socket-config";
 import { images } from "../utils/images";
 import MsgComp from "./msg-component";
@@ -9,6 +9,8 @@ import { pseudoMessage } from "../utils/message";
 const Message = ({ data }: any) => {
   const [msg, setMsg] = useState("");
   const [messages, setMessages] = useState<any>([]);
+  const [userPhoto, setUserPhoto] = useState<number>(0);
+  const messageEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchAllMessages = async () => {
@@ -16,8 +18,15 @@ const Message = ({ data }: any) => {
       setMessages(res);
     };
 
+    setUserPhoto(Math.floor(Math.random() * 3));
     fetchAllMessages();
   }, [data]);
+
+  useEffect(() => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   const handleFormSubmit = async (e: any) => {
     e.preventDefault();
@@ -49,7 +58,7 @@ const Message = ({ data }: any) => {
           <div className="user-img h-[24px] w-[24px]">
             <img
               className="h-full w-full rounded-sm"
-              src={images[Math.floor(Math.random() * 3)]}
+              src={images[userPhoto]}
               alt="user-img"
             />
           </div>
@@ -58,10 +67,11 @@ const Message = ({ data }: any) => {
       </div>
 
       {/* All the messages here */}
-      <div className="flex-1 py-3 w-full">
+      <div className="flex-1 py-3 w-full overflow-y-auto">
         {messages.map((msg: any, index: number) => (
           <MsgComp key={index} msg={msg} index={index} />
         ))}
+        <div ref={messageEndRef} />
       </div>
 
       <div className="h-[10%] mx-4 my-2 rounded-md border">
