@@ -11,7 +11,6 @@ export async function sendMessage(data: object) {
         },
       }
     );
-    console.log(res);
     return res.data;
   } catch (error: any) {
     console.log(error);
@@ -24,7 +23,6 @@ export async function getAllMessages(channelId: any) {
     const messages = await axios.get(
       `http://localhost:8080/api/v1/msg/getAll/${channelId}`
     );
-    console.log(messages);
     return messages.data.data;
   } catch (error: any) {
     console.log(error);

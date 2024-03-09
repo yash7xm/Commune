@@ -5,22 +5,27 @@ import socket from "../config/socket-config";
 import { images } from "../utils/images";
 import MsgComp from "./msg-component";
 import { pseudoMessage } from "../utils/message";
+import { getCurrentDateTime } from "../utils/date-time";
+import { useAtom } from "jotai";
+import { activeChannelAtom } from "../atoms/channels-atom";
 
-const Message = ({ data }: any) => {
+const Message = () => {
   const [msg, setMsg] = useState("");
   const [messages, setMessages] = useState<any>([]);
   const [userPhoto, setUserPhoto] = useState<number>(0);
   const messageEndRef = useRef<HTMLDivElement>(null);
+  const [activeChannel, setActiveChannel] = useAtom(activeChannelAtom);
 
   useEffect(() => {
     const fetchAllMessages = async () => {
-      const res = await getAllMessages(data.channelId);
+      const res = await getAllMessages(activeChannel[0]);
       setMessages(res);
     };
+    console.log("data vala use effect");
 
     setUserPhoto(Math.floor(Math.random() * 3));
     fetchAllMessages();
-  }, [data]);
+  }, [activeChannel]);
 
   useEffect(() => {
     if (messageEndRef.current) {
@@ -31,24 +36,37 @@ const Message = ({ data }: any) => {
   const handleFormSubmit = async (e: any) => {
     e.preventDefault();
     const msgData = {
-      channelId: data.channelId,
+      channelId: activeChannel[0],
       message: msg,
-      time: "2024-03-07 18:21:58",
+      time: getCurrentDateTime(),
     };
 
     pseudoMessage.message = msg;
     setMessages((prevMessages: any) => [...prevMessages, pseudoMessage]);
-    await sendMessage(msgData);
-    setMsg("");
+    const res = await sendMessage(msgData);
+    if (res.success) {
+      setMsg("");
+    }
   };
 
-  socket.on("msg_rcvd", (receivedData) => {
-    setMessages((prevMessages: any) => {
-      const updatedMessages = [...prevMessages];
-      updatedMessages[updatedMessages.length - 1] = receivedData;
-      return updatedMessages;
-    });
-  });
+  useEffect(() => {
+    const handleMsgReceived = (receivedData: any) => {
+      console.log(receivedData.channelId, activeChannel[0]);
+      if (receivedData.channelId === activeChannel[0]) {
+        setMessages((prevMessages: any) => {
+          const updatedMessages = [...prevMessages];
+          updatedMessages[updatedMessages.length - 1] = receivedData;
+          return updatedMessages;
+        });
+      }
+    };
+
+    socket.on("msg_rcvd", handleMsgReceived);
+
+    return () => {
+      socket.off("msg_rcvd", handleMsgReceived);
+    };
+  }, [socket, activeChannel]);
 
   return (
     <div className="h-[95%] w-[70%] bg-white rounded-r-md flex flex-col justify-between">
@@ -62,7 +80,7 @@ const Message = ({ data }: any) => {
               alt="user-img"
             />
           </div>
-          <div className="font-bold text-lg">{data.channelName}</div>
+          <div className="font-bold text-lg">{activeChannel[1]}</div>
         </div>
       </div>
 
@@ -81,7 +99,7 @@ const Message = ({ data }: any) => {
         >
           <input
             type="text"
-            placeholder={"Message" + " " + data.channelName}
+            placeholder={"Message" + " " + activeChannel[1]}
             className="h-full w-[95%] outline-none flex-wrap"
             value={msg}
             onChange={(e: any) => setMsg(e.target.value)}

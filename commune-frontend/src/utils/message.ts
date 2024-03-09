@@ -1,9 +1,9 @@
 import { getCurrentDateTime } from "./date-time"
 
 export const pseudoMessage = {
-    createdAt: getCurrentDateTime(),
+    time: getCurrentDateTime(),
     message: "",
-    type: "pseudo",
+    id: -1,
     userDetail: {
         name: "User_1",
     }

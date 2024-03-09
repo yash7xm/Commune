@@ -3,13 +3,14 @@ import { ChevronDown } from "lucide-react";
 import { useEffect } from "react";
 import AddUserDialog from "./addUserDialog";
 import { getAllChannels, filterChannelName } from "../hooks";
-import { useAtom } from 'jotai'
+import { useAtom } from "jotai";
 import channelsAtom from "../atoms/channels-atom";
 import { joinRoom } from "../socket";
+import { activeChannelAtom } from "../atoms/channels-atom";
 
-
-const Chat = ({handleStartChat}: any) => {
+const Chat = () => {
   const [channels, setChannels] = useAtom(channelsAtom);
+  const [activeChannel, setActiveChannel] = useAtom(activeChannelAtom);
 
   useEffect(() => {
     const fetchAllChannels = async () => {
@@ -27,12 +28,9 @@ const Chat = ({handleStartChat}: any) => {
   }, []);
 
   const handleChatClick = (channelId: any, channelName: any) => {
-    console.log(channelId);
     joinRoom(channelId);
-    handleStartChat({
-      channelId: channelId,
-      channelName: channelName,
-    });
+
+    setActiveChannel((): any => [channelId, channelName]);
   };
 
   return (
@@ -73,6 +71,12 @@ const Chat = ({handleStartChat}: any) => {
             </div>
           </div>
         ))}
+      </div>
+      <div
+        className="text-white cursor-pointer"
+        onClick={() => localStorage.clear()}
+      >
+        Logout
       </div>
     </div>
   );

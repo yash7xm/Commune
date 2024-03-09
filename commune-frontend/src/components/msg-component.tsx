@@ -17,10 +17,10 @@ const MsgComp = ({ msg, index }: any) => {
         <div className="user-detail flex gap-2 items-baseline">
           <span className="font-bold text-sm">{msg.userDetail.name}</span>
           <span className="text-muted-foreground text-xs">
-            {formatTime(msg.createdAt)}
+            {formatTime(msg.time)}
           </span>
         </div>
-        {msg.type ? (
+        {msg.id == -1 ? (
           <div className="msg-content text-[15px] text-muted-foreground w-full">
             {msg.message}
           </div>
