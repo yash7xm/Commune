@@ -2,7 +2,7 @@ const { MessageService } = require("../services");
 import { Request, Response } from "express";
 const { SuccessResponse, ErrorResponse } = require("../utils/common");
 const { StatusCodes } = require("http-status-codes");
-import { sendMessageToSocket } from "../index";
+import { sendMessageToSocket } from "../edge-server";
 
 async function sendMessage(req: any, res: Response) {
   try {
