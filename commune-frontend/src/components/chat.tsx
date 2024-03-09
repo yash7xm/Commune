@@ -3,14 +3,14 @@ import { ChevronDown } from "lucide-react";
 import { useEffect } from "react";
 import AddUserDialog from "./addUserDialog";
 import { getAllChannels, filterChannelName } from "../hooks";
-import { useAtom } from "jotai";
+import { useSetAtom, useAtom } from "jotai";
 import channelsAtom from "../atoms/channels-atom";
 import { joinRoom } from "../socket";
 import { activeChannelAtom } from "../atoms/channels-atom";
 
 const Chat = () => {
   const [channels, setChannels] = useAtom(channelsAtom);
-  const [activeChannel, setActiveChannel] = useAtom(activeChannelAtom);
+  const setActiveChannel = useSetAtom(activeChannelAtom);
 
   useEffect(() => {
     const fetchAllChannels = async () => {

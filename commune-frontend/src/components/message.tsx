@@ -6,7 +6,7 @@ import { images } from "../utils/images";
 import MsgComp from "./msg-component";
 import { pseudoMessage } from "../utils/message";
 import { getCurrentDateTime } from "../utils/date-time";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { activeChannelAtom } from "../atoms/channels-atom";
 
 const Message = () => {
@@ -14,7 +14,7 @@ const Message = () => {
   const [messages, setMessages] = useState<any>([]);
   const [userPhoto, setUserPhoto] = useState<number>(0);
   const messageEndRef = useRef<HTMLDivElement>(null);
-  const [activeChannel, setActiveChannel] = useAtom(activeChannelAtom);
+  const activeChannel = useAtomValue(activeChannelAtom);
 
   useEffect(() => {
     const fetchAllMessages = async () => {
